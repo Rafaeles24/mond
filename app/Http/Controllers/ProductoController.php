@@ -45,7 +45,7 @@ class ProductoController extends Controller
                 $archivo = $request->producto_img;
                 $timestamp = Carbon::now()->format('Y-m-d-H-i-s-u');
                 $fileName = "{$timestamp}-{$idCategoria}.{$archivo->extension()}";
-                $archivo->storeAs('producto/'.$idCategoria, $fileName, 'public');
+                $archivo->storeAs('producto/'.$producto->id, $fileName, 'public');
                 $producto->producto_img = $fileName;
                 $producto->save();
             }
