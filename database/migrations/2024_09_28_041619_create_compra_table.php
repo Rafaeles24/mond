@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('compra', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('carrito_id')->constrained('carrito');
-            $table->foreignId('metodo_pago_id')->constrained('metodo_pago');
+            $table->foreignId('usuario_id')->constrained('users');
             $table->decimal('precio_final');
-            $table->string('estado_compra');
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
+use App\Models\Carrito;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -28,6 +29,10 @@ class AuthController extends Controller
                 'nickname' => $request->nickname,
                 'email' => $request->email,
                 'password' => $password,
+            ]);
+
+            Carrito::create([
+                'usuario_id' => $user->id
             ]);
 
             $token = JWTAuth::fromUser($user);

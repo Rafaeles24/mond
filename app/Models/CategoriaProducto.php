@@ -7,5 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoriaProducto extends Model
 {
-    use HasFactory;
+    protected $table = 'categoria_producto';
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    public function productos() {
+        return $this->hasMany(Producto::class, 'categoria_id');
+    }
 }

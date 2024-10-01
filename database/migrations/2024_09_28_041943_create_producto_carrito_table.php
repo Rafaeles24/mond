@@ -1,6 +1,5 @@
 <?php
 
-use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +16,7 @@ return new class extends Migration
             $table->foreignId('producto_id')->constrained('producto');
             $table->foreignId('carrito_id')->constrained('carrito');
             $table->integer('cantidad');
-            $table->date('fecha_agregado')->default(Carbon::now()->format('Y-m-d'));
+            $table->decimal('precio');
             $table->timestamps();
         });
     }

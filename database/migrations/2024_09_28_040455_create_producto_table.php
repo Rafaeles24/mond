@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('descripcion');
             $table->decimal('precio');
-            $table->integer('stock');
+            $table->integer('calificacion_final')->default(0);
+            $table->integer('stock')->default(0);
+            $table->string('producto_img')->nullable();
             $table->timestamps();
         });
     }
