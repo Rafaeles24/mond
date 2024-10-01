@@ -33,7 +33,7 @@ class Producto extends Model
         if ($this->producto_img) {
             return asset('storage/producto/' . $this->id . '/' .  $this->producto_img);
         } else {
-            return asset('storage/producto/product-not-found.jpg');
+            return asset('product-not-found.jpg');
         }
     }
 
