@@ -33,30 +33,42 @@ class CarritoController extends Controller
 
     public function addProducto(Request $request, $idCarrito) {
         try {
-            //request body -> producto_id, cantidad
             DB::beginTransaction();
-            $carrito = Carrito::find($idCarrito)->first();
-            $producto = Producto::find($request->producto_id)->first();
-
-            if ($producto->stock < $request->cantidad) return response()->json(['error' => 'La cantidad seleccionada excede al stock de este producto.'], 400);
-
-            $productoCarrito = ProductoCarrito::updateOrCreate([
-                'producto_id' => $producto->id,
-                'carrito_id' => $carrito->id,
-            ], [
-                'cantidad' => $request->cantidad,
-                'precio' => $producto->precio * $request->cantidad
-            ]);
-
-            $carrito->precio_total = $productoCarrito->sum('precio');
-            $carrito->save();          
+            $carrito = Carrito::find($idCarrito);
+            if (!$carrito) {
+                return response()->json(['error' => 'Carrito no encontrado.'], 404);
+            }
+            $producto = Producto::find($request->producto_id);
+            if (!$producto) {
+                return response()->json(['error' => 'Producto no encontrado.'], 404);
+            }
+            $productoCarrito = ProductoCarrito::where('producto_id', $producto->id)
+                ->where('carrito_id', $idCarrito)
+                ->first();
+            $cantidadActual = $productoCarrito ? $productoCarrito->cantidad : 0;
+            if ($producto->stock < ($cantidadActual + $request->cantidad)) {
+                return response()->json(['error' => 'La cantidad seleccionada excede al stock de este producto.'], 400);
+            }
+            $productoCarrito = ProductoCarrito::updateOrCreate(
+                [
+                    'producto_id' => $producto->id,
+                    'carrito_id' => $carrito->id,
+                ],
+                [
+                    'cantidad' => $cantidadActual + $request->cantidad,
+                    'precio' => $producto->precio * ($cantidadActual + $request->cantidad)
+                ]
+            );
+            $carrito->precio_total = ProductoCarrito::where('carrito_id', $idCarrito)->sum('precio');
+            $carrito->save();
             DB::commit();
-            return response()->json(['msg' => 'Producto agregado al carrito'], 200);
+            return response()->json(['message' => 'Producto agregado al carrito'], 200);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => ''. $e], 500);
+            return response()->json(['error' => ''.$e], 500);
         }
     }
+    
 
     public function quitarProducto($idCarritoProducto) {
         try {

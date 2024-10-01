@@ -85,7 +85,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function compras() {
-        return $this->hasMany(Compra::class);
+        return $this->hasMany(Compra::class, 'usuario_id');
     }
 
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -24,6 +25,16 @@ class UserController extends Controller
             return response()->json($usuario, 200);
         } catch (Exception $e) {
             return response()->json(['error' => ''.$e], 500);
+        }
+    }
+
+    public function addAvatar() {
+        try {
+            DB::beginTransaction();
+            
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
         }
     }
 }

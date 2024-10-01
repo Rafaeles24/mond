@@ -16,8 +16,8 @@ class CompraController extends Controller
 {
     public function getCompra($idUsuario) {
         try {
-            $compra = user::with(['compras.productos.producto'])->find($idUsuario);
-            return response()->json(['data' => $compra, 'size' => count($compra)], 200);
+            $compra = User::with(['compras.productos.producto'])->where('id', $idUsuario)->get();
+            return response()->json($compra, 200);
         } catch (Exception $e) {
             return response()->json(['error' => ''.$e], 500);
         }
@@ -45,7 +45,7 @@ class CompraController extends Controller
             }
     
             $compra = Compra::create([
-                'carrito_id' => $carrito->id,
+                'usuario_id' => $usuario->id,
                 'precio_final' => $carrito->precio_total
             ]);
     
@@ -66,6 +66,8 @@ class CompraController extends Controller
             $usuario->save();
     
             ProductoCarrito::where('carrito_id', $idCarrito)->delete();
+            $carrito->precio_total = 0;
+            $carrito->save();
     
             DB::commit();
     
@@ -79,36 +81,22 @@ class CompraController extends Controller
     public function cancelCompra($idCompra) {
         try {
             DB::beginTransaction();
-    
             $compra = Compra::find($idCompra);
-    
-            if (!$compra) {
-                return response()->json(['error' => 'Compra no encontrada.'], 404);
-            }
-    
-            $carrito = Carrito::find($compra->carrito_id);
-            if (!$carrito) {
-                return response()->json(['error' => 'Carrito no encontrado para esta compra.'], 404);
-            }
-    
-            $usuario = User::find($carrito->id_usuario);
-    
+            if (!$compra) return response()->json(['error' => 'Compra no encontrada.'], 404);
+            $usuario = User::find($compra->usuario_id); 
+            if (!$usuario) return response()->json(['error' => 'Usuario no encontrado para esta compra.'], 404);
             $productosCompra = CompraProducto::where('compra_id', $idCompra)->get();
-    
             foreach ($productosCompra as $productoCompra) {
                 $producto = Producto::find($productoCompra->producto_id);
-    
                 if ($producto) {
-                    $producto->stock += $productoCompra->cantidad;
+                    $producto->stock += $productoCompra->cantidad; 
                     $producto->save();
                 }
             }
-    
             $usuario->saldo += $compra->precio_final;
             $usuario->save();
-    
             CompraProducto::where('compra_id', $idCompra)->delete();
-    
+
             $compra->delete();
     
             DB::commit();
@@ -117,9 +105,10 @@ class CompraController extends Controller
     
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => '' . $e], 500);
+            return response()->json(['error' => ''.$e], 500);
         }
     }
+    
     
     
 }
