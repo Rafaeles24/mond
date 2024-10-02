@@ -28,6 +28,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     //usuario
     Route::get('/getusers', [UserController::class, 'getUsers']);
     Route::get('/perfil/{idUsuario}', [UserController::class, 'perfil']);
+    Route::post('/perfil/addAvatar/{idUsuario}', [UserController::class, 'addAvatar']);
     Route::post('/logout', [AuthController::class, 'login']);
 
     //producto
