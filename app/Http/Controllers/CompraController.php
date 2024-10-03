@@ -19,6 +19,11 @@ class CompraController extends Controller
             $compras = Compra::with(['productos.producto'])->where('usuario_id', $idUsuario)->get();
             foreach ($compras as $compra) {
                 $compra->makeHidden('usuario_id');
+
+                foreach($compra->productos as $productos) {
+                    $productos->makeHidden('compra_id', 'producto_id');
+                    $productos->producto->makeHidden('descripcion', 'calificacion_final', 'stock');
+                }
             }
             return response()->json($compras, 200);
         } catch (Exception $e) {
