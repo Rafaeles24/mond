@@ -36,6 +36,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
     Route::get('/productos/detalle/{idProducto}', [ProductoController::class, 'detalleProducto']);
     Route::post('/productos/create/{idCategoria}', [ProductoController::class, 'agregarProducto']);
     Route::post('/productos/stock/{idProducto}', [ProductoController::class, 'agregarStock']);
+    Route::post('/productos/imagenAdd/{idProducto}', [ProductoController::class, 'addImagenProducto']);
 
     //review
     Route::post('/review/addReview/{idProducto}', [ReviewController::class, 'agregarComentario']);
