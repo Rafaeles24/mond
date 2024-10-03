@@ -22,7 +22,7 @@ class UserController extends Controller
 
     public function perfil($idUser) {
         try {
-            $usuario = User::find($idUser)->first();
+            $usuario = User::find($idUser);
             return response()->json($usuario, 200);
         } catch (Exception $e) {
             return response()->json(['error' => ''.$e], 500);
