@@ -54,7 +54,7 @@ class AuthController extends Controller
             if (!$token) {
                 return response()->json(['error' => 'Credenciales inválidas'], 401);
             }
-            return response()->json(['message' => 'Login exitoso', 'token' => $token], 200);
+            return response()->json(['id' => $user->id, 'nickname' => $user->nickname , 'message' => 'Login exitoso', 'token' => $token], 200);
         } catch (Exception $e) {
             return response()->json(['error' => ''.$e], 500);
         }
