@@ -41,7 +41,7 @@ class UserController extends Controller
                 'avatar.mimes' => 'La imagen debe ser de tipo jpeg, png, jpg o svg.',
                 'avatar.max' => 'La imagen no debe pesar más de 2 MB.'
             ]);
-            $usuario = User::find($idUsuario)->first();
+            $usuario = User::find($idUsuario);
             $imagen = $request->avatar;
             $tiempo = Carbon::now()->format('Y-m-d-H-i-s');
             $nuevoNombre = "{$tiempo}-{$idUsuario}-{$usuario->nickname}.{$imagen->extension()}";
