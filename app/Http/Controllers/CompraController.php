@@ -16,8 +16,8 @@ class CompraController extends Controller
 {
     public function getCompra($idUsuario) {
         try {
-            $compra = User::with(['compras.productos.producto'])->where('id', $idUsuario)->get();
-            return response()->json($compra, 200);
+            $compra = Compra::with(['productos.producto'])->where('usuario_id', $idUsuario)->get();
+            return response()->json([$compra], 200);
         } catch (Exception $e) {
             return response()->json(['error' => ''.$e], 500);
         }
