@@ -61,7 +61,7 @@ class ProductoController extends Controller
     public function agregarStock(Request $request, $idProducto) {
         try {
             DB::beginTransaction();
-            $producto = Producto::find($idProducto)->first();
+            $producto = Producto::find($idProducto);
             $producto->stock += $request->stock;
             $producto->save();
             DB::commit();

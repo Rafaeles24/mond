@@ -72,8 +72,8 @@ class CarritoController extends Controller
     public function quitarProducto($idCarritoProducto) {
         try {
             DB::beginTransaction();
-            $productoCarrito = ProductoCarrito::find($idCarritoProducto)->first();
-            $carrito = Carrito::find($productoCarrito->carrito_id)->first();
+            $productoCarrito = ProductoCarrito::find($idCarritoProducto);
+            $carrito = Carrito::find($productoCarrito->carrito_id);
             $productoCarrito->delete();
             $carrito->precio_total = ProductoCarrito::where('carrito_id', $carrito->id)->get()->sum('precio');
             $carrito->save();
