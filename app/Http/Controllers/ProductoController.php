@@ -92,9 +92,9 @@ class ProductoController extends Controller
             //request body: producto_img
             DB::beginTransaction();
             $request->validate([
-                'avatar' => 'required|file|image|mimes:jpeg,png,jpg,svg|max:2048',
+                'producto_img' => 'required|file|image|mimes:jpeg,png,jpg,svg|max:2048',
             ], [
-                'avatar.required' => 'El campo avatar es obligatorio.',
+                'avatar.required' => 'El campo producto_img es obligatorio.',
                 'avatar.image' => 'El archivo debe ser una imagen.',
                 'avatar.mimes' => 'La imagen debe ser de tipo jpeg, png, jpg o svg.',
                 'avatar.max' => 'La imagen no debe pesar más de 2 MB.'
