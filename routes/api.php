@@ -47,6 +47,6 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     //compra
     Route::get('/compra/{idusuario}', [CompraController::class, 'getCompra']);
-    Route::post('/compra/addCompra/{idCarrito}', [CompraController::class, 'addCompra']);
+    Route::post('/compra/addCompra/{idUsuario}', [CompraController::class, 'addCompra']);
     Route::post('/compra/cancelCompra/{idCompra}', [CompraController::class, 'cancelCompra']);
 });

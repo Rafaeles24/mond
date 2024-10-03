@@ -16,8 +16,11 @@ class CompraController extends Controller
 {
     public function getCompra($idUsuario) {
         try {
-            $compra = Compra::with(['productos.producto'])->where('usuario_id', $idUsuario)->get();
-            return response()->json([$compra], 200);
+            $compras = Compra::with(['productos.producto'])->where('usuario_id', $idUsuario)->get();
+            foreach ($compras as $compra) {
+                $compra->makeHidden('usuario_id');
+            }
+            return response()->json($compras, 200);
         } catch (Exception $e) {
             return response()->json(['error' => ''.$e], 500);
         }
