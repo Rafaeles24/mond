@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('nickname');
             $table->string('email')->unique();
-            $table->decimal('saldo')->default(0);
+            $table->decimal('saldo')->default(1000);
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->rememberToken()->nullable();

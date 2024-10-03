@@ -42,7 +42,7 @@ Route::group(['middleware' => ['jwt.auth']], function () {
 
     //carrito
     Route::get('/carrito/{idUsuario}', [CarritoController::class, 'getCarrito']);
-    Route::post('/carrito/add/{idProducto}', [CarritoController::class, 'addProducto']);
+    Route::post('/carrito/add/{idCarrito}', [CarritoController::class, 'addProducto']);
     Route::delete('/carrito/remove/{idCarritoProducto}', [CarritoController::class, 'quitarProducto']);
 
     //compra

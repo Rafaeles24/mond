@@ -13,18 +13,17 @@ use Illuminate\Support\Facades\DB;
 
 class CarritoController extends Controller
 {
-    public function getCarrito($idUsuario) {
+    public function getCarrito($idCarrito) {
         try {
-            $carrito = User::with(['carrito.productos.producto'])->find($idUsuario);
-            $carrito->makeHidden('first_name', 'last_name', 'nickname', 'saldo', 'url_avatar');
-            $carrito->carrito->makeHidden('usuario_id');
+            $carrito = Carrito::with(['productos.producto'])->find($idCarrito);
+            $carrito->makeHidden('usuario_id');
 
-            if ($carrito->carrito->productos) {
-                foreach($carrito->carrito->productos as $productos) {
+            if ($carrito->productos) {
+                foreach($carrito->productos as $productos) {
                     $productos->makeHidden('producto_id', 'carrito_id');
                     $productos->producto->makeHidden('descripcion', 'calificacion_final', 'stock');
                 }
-            }
+            } 
             return response()->json($carrito, 200);
         } catch (Exception $e) {
             return response()->json(['error' => ''.$e], 500);
